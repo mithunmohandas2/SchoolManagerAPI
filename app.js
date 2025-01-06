@@ -12,7 +12,7 @@ const adminRouter = require('./routes/adminRoutes');
 const usersRouter = require('./routes/userRoutes');
 
 // CORS Policy
-const allowedOrigins = ['http://localhost:5173', 'https://YourExampleDomain.com']; // Add more origins if needed
+const allowedOrigins = ['http://localhost:5173', 'https://oratio.live', 'https://www.lordsacademy.com/' ]; // Add more origins if needed
 
 // Create Express app
 const app = express();
