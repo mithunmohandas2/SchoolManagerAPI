@@ -5,7 +5,7 @@ const MongoDB_Link = "mongodb+srv://mithunsruthi:test1234@cluster0.patjqvm.mongo
 mongoose.Promise = global.Promise;
 
 // Check if the MongoDB link is available before attempting connection
-if (!process.env.MongoDB_Link ?? MongoDB_Link) {
+if (!process.env.MongoDB_Link && !MongoDB_Link) {
   console.error('MongoDB connection string is missing!');
   process.exit(1); // Exit the process if no DB link is provided
 }
