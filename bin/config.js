@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 require('dotenv').config()
-
-// mongoose.Promise = global.Promise;
-
-// Connect MongoDB
-// module.exports = mongoose.connect(process.env.MongoDB_Link);
+cont MongoDB_Link = "mongodb+srv://mithunsruthi:test1234@cluster0.patjqvm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 mongoose.Promise = global.Promise;
 
@@ -15,7 +11,7 @@ if (!process.env.MongoDB_Link) {
 }
 
 // Connect to MongoDB using the MongoDB link from the environment variable
-mongoose.connect(process.env.MongoDB_Link, {
+mongoose.connect(MongoDB_Link, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
