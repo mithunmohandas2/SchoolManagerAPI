@@ -8,5 +8,6 @@ user_router.get('/', userController.test)
 user_router.get('/images', userController.getImages);
 user_router.get('/videos', userController.getVideos);
 user_router.get('/news', userController.getNews);
+user_router.get('/events', userController.getEvents);
 
 module.exports = user_router;

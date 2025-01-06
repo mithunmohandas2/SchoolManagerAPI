@@ -2,9 +2,9 @@
   "name": "school_website_manager_api",
   "version": "1.0.0",
   "private": true,
-  "scripts": {
-    "start": "nodemon ./bin/www"
-  },
+"scripts": {
+  "start": "nodemon app.js"
+},
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",

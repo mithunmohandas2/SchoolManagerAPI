@@ -1,6 +1,7 @@
 const User = require('../models/userModel');
 const Gallery = require('../models/galleryModel');
 const News = require('../models/newsModel');
+const Events = require('../models/eventsModel');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 
@@ -54,17 +55,54 @@ const createToken = async (id) => {
     }
 }
 
+// -------------------- Verify Token ---------------------------------- 
+const verifyToken = async (req, res) => {
+    try {
+        const { token } = req.body;
+        const decoded = await jwt.verify(token, process.env.secretJWT);
+        if (decoded?.error) {
+            res.status(401).json({
+                success: false,
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+            });
+        }
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: 'Database error: ' + error.message });
+    }
+}
+
 // .................Update User Data......................... 
 const updateUser = async (req, res) => {
     try {
-        const { _id } = req.params;
-        const updatedData = req.body;
+        const { _id, username, email, phone, password } = req.body;
 
-        let users = await User.findByIdAndUpdate(_id, updatedData, { new: true });
-        if (!users) return res.status(404).json({ error: 'User not found' });
+        // Validate that _id is provided
+        if (!_id) {
+            return res.status(400).json({ error: "User ID (_id) is required." });
+        }
 
-        const updatedUser = await User.findOne({ _id });
+        // Prepare the fields to update
+        const updatedData = {};
+        if (username) updatedData.username = username;
+        if (email) updatedData.email = email;
+        if (phone) updatedData.phone = phone;
+        if (password) updatedData.password = password;
+
+        // Update the user
+        const updatedUser = await User.findByIdAndUpdate(_id, updatedData, { new: true });
+
+        if (!updatedUser) {
+            return res.status(404).json({ error: "User not found." });
+        }
+
+        // Create a new token for the updated user
         const tokenData = await createToken(updatedUser._id);
+
+        // Respond with the updated user data and token
         res.status(200).json({
             _id: updatedUser._id,
             username: updatedUser.username,
@@ -74,10 +112,10 @@ const updateUser = async (req, res) => {
             token: tokenData,
         });
     } catch (error) {
-        console.log(error.message);
-        res.status(500).json({ error: 'Database error: ' + error.message });
+        console.error("Error updating user:", error.message);
+        res.status(500).json({ error: "Database error: " + error.message });
     }
-}
+};
 
 // ---------------------- Upload Photo ---------------------------------- 
 const uploadPhoto = async (req, res) => {
@@ -91,12 +129,14 @@ const uploadPhoto = async (req, res) => {
         const newImage = new Gallery({
             type: 'image',
             path: imagePath,
+            filename: req.file.filename,
         });
         await newImage.save();
 
         res.status(200).json({
             success: true,
-            path: imagePath
+            path: imagePath,
+            filename: req.file.filename,
         });
     } catch (error) {
         console.log(error.message);
@@ -107,14 +147,15 @@ const uploadPhoto = async (req, res) => {
 // -------------------- Add to Gallery ---------------------------------- 
 const addToGallery = async (req, res) => {
     try {
-        const { type, path } = req.body;
+        const { type, path, filename } = req.body;
 
-        const newFile = new Gallery({ type, path });
+        const newFile = new Gallery({ type, path, filename });
         await newFile.save();
 
         res.status(200).json({
             success: true,
-            path: path
+            path: path,
+            filename: filename,
         });
     } catch (error) {
         console.log(error.message);
@@ -143,10 +184,60 @@ const addNews = async (req, res) => {
     }
 }
 
+// -------------------- Add Events ---------------------------------- 
+const addEvents = async (req, res) => {
+    try {
+        const { event, date } = req.body;
+
+        const newNews = new Events({
+            event,
+            date,
+        });
+        await newNews.save();
+
+        res.status(200).json({
+            success: true,
+            message: 'Event added successfully'
+        });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: 'Database error: ' + error.message });
+    }
+}
+
+// -------------------- Delete Document ---------------------------------- 
+const deleteDocument = async (req, res) => {
+    try {
+        const { type, _id } = req.body;
+
+        let response;
+        if (type === "news") {
+            response = await News.findByIdAndDelete(_id);
+        } 
+        else if(type ==="event") {
+            response = await Events.findByIdAndDelete(_id);
+        } 
+        else {
+            response = await Gallery.findByIdAndDelete(_id);
+        }
+        console.log(response);
+        res.status(200).json({
+            success: true,
+            message: 'deleted successfully'
+        });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: 'Database error: ' + error.message });
+    }
+}
+
 module.exports = {
     loginAdmin,
+    verifyToken,
     updateUser,
     uploadPhoto,
     addToGallery,
     addNews,
+    addEvents,
+    deleteDocument,
 };

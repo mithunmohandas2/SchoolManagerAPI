@@ -11,7 +11,7 @@ var gallerySchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    base64: {
+    filename: {
         type: String,
     },
     thumbnail: {
