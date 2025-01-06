@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 require('dotenv').config()
-cont MongoDB_Link = "mongodb+srv://mithunsruthi:test1234@cluster0.patjqvm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const MongoDB_Link = "mongodb+srv://mithunsruthi:test1234@cluster0.patjqvm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 mongoose.Promise = global.Promise;
 
