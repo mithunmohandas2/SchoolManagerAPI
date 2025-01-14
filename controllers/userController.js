@@ -9,13 +9,13 @@ const test = async (req, res) => {
 // ................. Image Gallery Fetch ......................... 
 const getImages = async (req, res) => {
     try {
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
-        const skip = (page - 1) * limit;
+        // const page = parseInt(req.query.page) || 1;
+        // const limit = parseInt(req.query.limit) || 10;
+        // const skip = (page - 1) * limit;
 
         const images = await Gallery.find({ type: "image" })
-            .skip(skip)
-            .limit(limit);
+            // .skip(skip)
+            // .limit(limit);
 
         if (images) {
             res.status(200).json(images);
@@ -31,13 +31,13 @@ const getImages = async (req, res) => {
 // ................. Video Gallery Fetch ......................... 
 const getVideos = async (req, res) => {
     try {
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
-        const skip = (page - 1) * limit;
+        // const page = parseInt(req.query.page) || 1;
+        // const limit = parseInt(req.query.limit) || 10;
+        // const skip = (page - 1) * limit;
 
         const videos = await Gallery.find({ type: "video" })
-            .skip(skip)
-            .limit(limit);
+            // .skip(skip)
+            // .limit(limit);
 
         if (videos) {
             res.status(200).json(videos);
@@ -53,13 +53,13 @@ const getVideos = async (req, res) => {
 // ................. Fetch News ......................... 
 const getNews = async (req, res) => {
     try {
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
-        const skip = (page - 1) * limit;
+        // const page = parseInt(req.query.page) || 1;
+        // const limit = parseInt(req.query.limit) || 10;
+        // const skip = (page - 1) * limit;
 
         const news = await News.find()
-            .skip(skip)
-            .limit(limit);
+            // .skip(skip)
+            // .limit(limit);
 
         if (news) {
             res.status(200).json(news);
@@ -75,13 +75,13 @@ const getNews = async (req, res) => {
 // ................. Fetch Events ......................... 
 const getEvents = async (req, res) => {
     try {
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
-        const skip = (page - 1) * limit;
+        // const page = parseInt(req.query.page) || 1;
+        // const limit = parseInt(req.query.limit) || 10;
+        // const skip = (page - 1) * limit;
 
         const news = await Events.find()
-            .skip(skip)
-            .limit(limit);
+            // .skip(skip)
+            // .limit(limit);
 
         if (news) {
             res.status(200).json(news);
